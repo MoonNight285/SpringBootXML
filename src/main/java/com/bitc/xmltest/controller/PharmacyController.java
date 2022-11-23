@@ -27,4 +27,14 @@ public class PharmacyController {
         mv.addObject("pharmacyDatas", itemList);
         return mv;
     }
+    
+    @RequestMapping(value = "/pharmacy/fullDataUrl", method = RequestMethod.GET)
+    public String viewFullData() throws Exception {
+        return "pharmacy/fullDataUrl";
+    }
+    
+    @RequestMapping(value = "/pharmacy/fullDataUrl", method = RequestMethod.POST)
+    public Object getFullDataAjax() throws Exception {
+        return "";
+    }
 }
