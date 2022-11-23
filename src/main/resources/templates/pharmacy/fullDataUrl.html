@@ -9,9 +9,13 @@
     <script>
         $(document).ready(function() {
             $("#btn-ok").on("click", function () {
+                const pageNumberValue = $("#pageNumber").val();
+                const rowCountValue = $("#rowCount").val();
+                
                 $.ajax({
                     url: "/pharmacy/fullDataUrl",
                     type: "post",
+                    data: {pageNumber : pageNumberValue, rowCount : rowCountValue},
                     success: function (data) {
                         if (data.length > 0) {
                             $("#openApiTable tbody").empty();
@@ -60,7 +64,15 @@
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-primary" id="btn-ok">불러오기</button>
+                    <form class="form-floating mx-2">
+                        <input type="text" class="form-control" id="pageNumber">
+                        <label for="pageNumber">페이지 번호</label>
+                    </form>
+                    <form class="form-floating mx-2">
+                        <input type="text" class="form-control" id="rowCount">
+                        <label for="rowCount">행 개수</label>
+                    </form>
+                    <button type="button" class="btn btn-primary mx-2" id="btn-ok">불러오기</button>
                 </div>
             </div>
         </div>

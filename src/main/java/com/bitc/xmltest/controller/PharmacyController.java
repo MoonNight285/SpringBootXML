@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.tags.Param;
 
 import java.util.List;
 
@@ -51,7 +53,7 @@ public class PharmacyController {
     
     @ResponseBody
     @RequestMapping(value = "/pharmacy/fullDataUrl", method = RequestMethod.POST)
-    public Object getFullDataAjax() throws Exception {
+    public Object getFullDataAjax(@RequestParam("pageNumber") int pageNumber, @RequestParam("rowCount") int rowCount) throws Exception {
         // open API 서버로 요청하기 위한 URL 생성 작업이 필요..
         // https://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/ // 서버주소(endPoint)
         // getParmacyFullDown // 서비스 요청 주소
@@ -62,9 +64,9 @@ public class PharmacyController {
         String reqService = "/getParmacyFullDown";
         String service = "?serviceKey=";
         String option1 = "&pageNo=";
-        String option2 = "numOfRows=";
+        String option2 = "&numOfRows=";
         
-        String url = endPoint + reqService + service + serviceKey + option1 + 1 + option2 + 10;
+        String url = endPoint + reqService + service + serviceKey + option1 + pageNumber + option2 + rowCount;
         
         List<PharmacyFullDataItemDto> pharmacyDatas = pharmacyFullDataService.getItemListUrl(url);
         
