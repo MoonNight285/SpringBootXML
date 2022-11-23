@@ -20,9 +20,9 @@ public class PharmacyController {
         return "index";
     }
     
-    @RequestMapping(value = "/pharmacy/fullData", method = RequestMethod.GET)
+    @RequestMapping(value = "/pharmacy/fullDataFile", method = RequestMethod.GET)
     public ModelAndView getFullData() throws Exception {
-        ModelAndView mv = new ModelAndView("pharmacy/fullData");
+        ModelAndView mv = new ModelAndView("pharmacy/fullDataFile");
         List<PharmacyFullDataItemDto> itemList = pharmacyFullDataService.getItemList();
         mv.addObject("pharmacyDatas", itemList);
         return mv;
