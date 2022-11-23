@@ -3,9 +3,11 @@ package com.bitc.xmltest.controller;
 import com.bitc.xmltest.dto.PharmacyFullDataItemDto;
 import com.bitc.xmltest.service.PharmacyFullDataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -22,6 +24,12 @@ import java.util.List;
 public class PharmacyController {
     @Autowired
     private PharmacyFullDataService pharmacyFullDataService;
+    
+    @Value("${openApi.endPoint}")
+    private String endPoint;
+    
+    @Value("${openApi.serviceKey}")
+    private String serviceKey;
     
     @RequestMapping("/")
     public String index() throws Exception {
@@ -41,8 +49,25 @@ public class PharmacyController {
         return "pharmacy/fullDataUrl";
     }
     
+    @ResponseBody
     @RequestMapping(value = "/pharmacy/fullDataUrl", method = RequestMethod.POST)
     public Object getFullDataAjax() throws Exception {
-        return "";
+        // open API 서버로 요청하기 위한 URL 생성 작업이 필요..
+        // https://apis.data.go.kr/B552657/ErmctInsttInfoInqireService/ // 서버주소(endPoint)
+        // getParmacyFullDown // 서비스 요청 주소
+        // ?serviceKey=pAR7xB7Uwyh4RcIMj1YNS9nYmjzzbIEm%2BTOpaJa1IxsC%2FB7J96c6jR5lABRfJjfLbB323p8xThlPinRbLSe6pw%3D%3D // 개인 키
+        // &pageNo=1& // 옵션 1
+        // numOfRows=10 // 옵션 2
+        
+        String reqService = "/getParmacyFullDown";
+        String service = "?serviceKey=";
+        String option1 = "&pageNo=";
+        String option2 = "numOfRows=";
+        
+        String url = endPoint + reqService + service + serviceKey + option1 + 1 + option2 + 10;
+        
+        List<PharmacyFullDataItemDto> pharmacyDatas = pharmacyFullDataService.getItemListUrl(url);
+        
+        return pharmacyDatas;
     }
 }

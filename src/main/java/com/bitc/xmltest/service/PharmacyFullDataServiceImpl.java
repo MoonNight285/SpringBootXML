@@ -3,9 +3,12 @@ package com.bitc.xmltest.service;
 import com.bitc.xmltest.dto.*;
 import org.springframework.stereotype.Service;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 @Service
@@ -29,6 +32,29 @@ public class PharmacyFullDataServiceImpl implements PharmacyFullDataService {
         
         // 사용자가 필요로 하는 데이터만 출력
         List<PharmacyFullDataItemDto> itemList = items.getItemList();
+        
+        return itemList;
+    }
+    
+    @Override
+    public List<PharmacyFullDataItemDto> getItemListUrl(String strUrl) throws Exception {
+        List<PharmacyFullDataItemDto> itemList = null;
+        URL url = null;
+        HttpURLConnection urlConn = null;
+        
+        try {
+            url = new URL(strUrl);
+            urlConn = (HttpURLConnection)url.openConnection();
+            urlConn.setRequestMethod("GET");
+            
+            JAXBContext jc = JAXBContext.newInstance(PharmacyFullDataDto.class);
+            Unmarshaller um = jc.createUnmarshaller();
+            PharmacyFullDataDto fullData = (PharmacyFullDataDto)um.unmarshal(url);
+            itemList = fullData.getBody().getItems().getItemList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (urlConn != null) { urlConn.disconnect(); }
+        }
         
         return itemList;
     }
