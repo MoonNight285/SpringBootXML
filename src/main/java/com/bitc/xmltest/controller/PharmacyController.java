@@ -10,6 +10,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+// jaxb : 자바에서 xml 데이터를 파싱을 도와주는 라이브러리
+// Marshal : 자바 클래스를 XML 데이터로 변환
+// UnMarshal : XML 데이터를 자바 클래스 타입의 객체로 변환
+
+// @XmlRootElement : XML 데이터에서 부모가 되는 태그를 뜻한다.
+// @XmlElement : XML 데이터에서 실제 데이터가 들어있는 태그를 뜻함
+// @XmlAttribute : XML 데이터에서 지정한 태그의 속성을 뜻한다.
+
 @Controller
 public class PharmacyController {
     @Autowired
