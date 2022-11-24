@@ -1,6 +1,8 @@
 package com.bitc.xmltest.controller;
 
+import com.bitc.xmltest.dto.DailyBoxOfficeDto;
 import com.bitc.xmltest.dto.PharmacyFullDataItemDto;
+import com.bitc.xmltest.service.BoxOfficeService;
 import com.bitc.xmltest.service.PharmacyFullDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +26,8 @@ import java.util.List;
 
 @Controller
 public class PharmacyController {
+    @Autowired
+    private BoxOfficeService boxOfficeService;
     @Autowired
     private PharmacyFullDataService pharmacyFullDataService;
     
@@ -71,5 +75,18 @@ public class PharmacyController {
         List<PharmacyFullDataItemDto> pharmacyDatas = pharmacyFullDataService.getItemListUrl(url);
         
         return pharmacyDatas;
+    }
+    
+    @RequestMapping(value = "/movie/dailyBoxOffice", method = RequestMethod.GET)
+    public String dailyBoxOfficeView() {
+        return "/movie/dailyBoxOffice";
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/movie/dailyBoxOfficeJson", method = RequestMethod.POST)
+    public Object getDailyBoxOfficeListJson() {
+        String url = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20221121";
+        List<DailyBoxOfficeDto> dailyBoxOfficeList = boxOfficeService.getDailyBoxOfficeListJson(url);
+        return dailyBoxOfficeList;
     }
 }
